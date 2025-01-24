@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public sealed class Player : MonoBehaviour
 {
-	[Tooltip("Adjust this value to change the object's facing direction (in degrees).")]
 	public float rotationOffset = -90f;
 
-	void Update()
+	void Update() 
 	{
 		RotateToMouse();
 	}
 
-	private void RotateToMouse()
+	private void RotateToMouse() 
 	{
 		Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
