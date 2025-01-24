@@ -8,10 +8,9 @@ public class PlayerShooting : MonoBehaviour
 	[SerializeField] private Transform projectileSpawnPosition;
 	[SerializeField] private float projectileSpeed = 10f;
 	[SerializeField] private float fireRate = 0.5f;
-
 	private float _nextFireTime = 0f;
 
-	void Update()
+	private void Update()
 	{
 		if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime)
 		{

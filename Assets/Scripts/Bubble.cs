@@ -1,24 +1,19 @@
 using UnityEngine;
 
-public class Bubble : MonoBehaviour
+public sealed class Bubble : MonoBehaviour
 {
+	[SerializeField] private Rigidbody2D rb;
 	[SerializeField] private int scoreValue = 1;
 	[SerializeField] private ParticleSystem destroyParticlePrefab;
-
-	[Header("Movement Settings")]
 	[SerializeField] private float horizontalMoveSpeed = 1f;
 
 	private float upwardSpeed;
 	private float noiseFrequency;
 	private float noiseStrength;
-
-	private Rigidbody2D rb;
 	private float noiseTime;
 
 	private void Awake()
 	{
-		rb = GetComponent<Rigidbody2D>();
-
 		upwardSpeed = Random.Range(0.7f, 2f);
 		noiseFrequency = Random.Range(0.2f, 0.5f);
 		noiseStrength = Random.Range(3f, 1f);

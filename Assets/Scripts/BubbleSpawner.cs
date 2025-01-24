@@ -6,7 +6,6 @@ public class BubbleSpawner : MonoBehaviour
 	[SerializeField] private float minSpawnInterval = 1f;
 	[SerializeField] private float maxSpawnInterval = 3f;
 	[SerializeField] private float spawnHeightOffset = 2f;
-
 	private Collider2D spawnArea;
 	private float nextSpawnTime;
 
