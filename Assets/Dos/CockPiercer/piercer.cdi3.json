@@ -1,0 +1,161 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamAngleX2",
+			"GroupId": "ParamGroup",
+			"Name": "Wire X"
+		},
+		{
+			"Id": "ParamAngleX4",
+			"GroupId": "ParamGroup",
+			"Name": "Gear R"
+		},
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "ParamGroup",
+			"Name": "Meter R"
+		},
+		{
+			"Id": "ParamAngleX6",
+			"GroupId": "ParamGroup2",
+			"Name": "Green<- Y"
+		},
+		{
+			"Id": "ParamAngleX8",
+			"GroupId": "ParamGroup2",
+			"Name": "GreenTex<-"
+		},
+		{
+			"Id": "ParamAngleX9",
+			"GroupId": "ParamGroup2",
+			"Name": "Green<- Y"
+		},
+		{
+			"Id": "ParamAngleX10",
+			"GroupId": "ParamGroup2",
+			"Name": "GreenTex<-"
+		},
+		{
+			"Id": "ParamAngleX3",
+			"GroupId": "",
+			"Name": "Pump"
+		},
+		{
+			"Id": "ParamAngleX5",
+			"GroupId": "",
+			"Name": "MainAmmo X"
+		},
+		{
+			"Id": "ParamAngleX7",
+			"GroupId": "",
+			"Name": "MainAmmo Op"
+		},
+		{
+			"Id": "ParamAngleX11",
+			"GroupId": "",
+			"Name": "Core R"
+		},
+		{
+			"Id": "ParamAngleX19",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo  1 Y"
+		},
+		{
+			"Id": "ParamAngleX12",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo  2 X"
+		},
+		{
+			"Id": "ParamAngleX20",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo  2 Y"
+		},
+		{
+			"Id": "ParamAngleX13",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo 3 X"
+		},
+		{
+			"Id": "ParamAngleX21",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo 3 Y"
+		},
+		{
+			"Id": "ParamAngleX14",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo 4 X"
+		},
+		{
+			"Id": "ParamAngleX22",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo 4 Y"
+		},
+		{
+			"Id": "ParamAngleX15",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo 5 X"
+		},
+		{
+			"Id": "ParamAngleX23",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo 5 Y"
+		},
+		{
+			"Id": "ParamAngleX16",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo 6 X"
+		},
+		{
+			"Id": "ParamAngleX24",
+			"GroupId": "ParamGroup3",
+			"Name": "Ammo 6 Y"
+		},
+		{
+			"Id": "ParamAngleX25",
+			"GroupId": "ParamGroup3",
+			"Name": "Reload X"
+		},
+		{
+			"Id": "ParamAngleX17",
+			"GroupId": "ParamGroup3",
+			"Name": "Reload Y"
+		},
+		{
+			"Id": "ParamAngleX18",
+			"GroupId": "ParamGroup3",
+			"Name": "Reload Op"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "Front"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "Green"
+		},
+		{
+			"Id": "ParamGroup3",
+			"GroupId": "",
+			"Name": "Ammo"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "Front",
+			"Name": "Front"
+		},
+		{
+			"Id": "Green",
+			"Name": "Green"
+		},
+		{
+			"Id": "ammo",
+			"Name": "ammo"
+		}
+	]
+}

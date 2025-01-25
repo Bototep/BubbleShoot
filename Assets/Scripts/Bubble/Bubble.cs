@@ -4,8 +4,12 @@ public class Bubble : MonoBehaviour
 {
 	[SerializeField] private int scoreValue = 1;
 	[SerializeField] private ParticleSystem destroyParticlePrefab;
+	[SerializeField] private ParticleSystem blastParticlePrefab;
+	[SerializeField] private ParticleSystem KikiParticlePrefab;
 	[SerializeField] private float horizontalMoveSpeed = 1f;
-	[SerializeField] private SkillManager.SkillType skillType = SkillManager.SkillType.None; // Set the skill type in Inspector
+	[SerializeField] private SkillManager.SkillType skillType = SkillManager.SkillType.None;
+	[SerializeField] private Transform childGameObject;
+	[SerializeField] private Vector3 childWorldScale = new Vector3(0.3f, 0.3f, 1f);
 
 	private float upwardSpeed;
 	private float noiseFrequency;
@@ -18,8 +22,7 @@ public class Bubble : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 
 		rb.gravityScale = 0f;
-
-		upwardSpeed = Random.Range(0.7f, 2f);
+		upwardSpeed = Random.Range(1.5f, 2.5f);
 		noiseFrequency = Random.Range(0.2f, 0.5f);
 		noiseStrength = Random.Range(3f, 1f);
 
@@ -28,6 +31,16 @@ public class Bubble : MonoBehaviour
 
 	private void Update()
 	{
+		if (childGameObject != null)
+		{
+			Vector3 parentScale = transform.lossyScale;
+			childGameObject.localScale = new Vector3(
+				childWorldScale.x / parentScale.x,
+				childWorldScale.y / parentScale.y,
+				childWorldScale.z / parentScale.z
+			);
+		}
+
 		noiseTime += Time.deltaTime * noiseFrequency;
 		float noiseX = Mathf.PerlinNoise(noiseTime, 0f) * 2f - 1f;
 		float horizontalMovement = noiseX * noiseStrength;
@@ -81,8 +94,24 @@ public class Bubble : MonoBehaviour
 			Destroy(particles.gameObject, particles.main.duration);
 		}
 
+		if (blastParticlePrefab != null)
+		{
+			ParticleSystem blastParticles = Instantiate(blastParticlePrefab, transform.position, Quaternion.identity);
+			blastParticles.transform.localScale = transform.localScale;
+			blastParticles.Play();
+			Destroy(blastParticles.gameObject, blastParticles.main.duration);
+		}
+
+		if (KikiParticlePrefab != null)
+		{
+			ParticleSystem kikiParticles = Instantiate(KikiParticlePrefab, transform.position, Quaternion.Euler(-90f, 0f, 0f));
+			kikiParticles.transform.localScale = Vector3.one;  
+			Destroy(kikiParticles.gameObject, kikiParticles.main.duration);
+		}
+
 		Destroy(gameObject);
 	}
+
 
 	private void HandleExplosion(Vector2 explosionPosition)
 	{

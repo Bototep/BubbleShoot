@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 	private const string ScoreKey = "Score";
 
 	private readonly Dictionary<GameObject, float> bubbleStayTimers = new Dictionary<GameObject, float>();
-	private const float TimeToGameOver = 5f; 
+	private const float TimeToGameOver = 10f; 
 
 	void Awake()
 	{
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
 	void UpdateScoreText()
 	{
-		if (scoreText != null) scoreText.text = "Score: " + _score;
+		if (scoreText != null) scoreText.text = _score.ToString();
 	}
 
 	public int GetScore() => _score;

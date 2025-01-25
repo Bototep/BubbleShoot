@@ -16,6 +16,9 @@ public class BubbleSpawner : MonoBehaviour
 	[SerializeField] private float maxSpawnInterval = 3f;
 	[SerializeField] private float spawnHeightOffset = 2f;
 
+	[SerializeField] private float spawnIntervalDecreaseRate = 0.05f; 
+	[SerializeField] private float minSpawnIntervalLimit = 0.2f; 
+
 	private Collider2D spawnArea;
 	private float nextSpawnTime;
 
@@ -32,6 +35,9 @@ public class BubbleSpawner : MonoBehaviour
 			SpawnBauble();
 			ScheduleNextSpawn();
 		}
+
+		minSpawnInterval = Mathf.Max(minSpawnInterval - spawnIntervalDecreaseRate * Time.deltaTime, minSpawnIntervalLimit);
+		maxSpawnInterval = Mathf.Max(maxSpawnInterval - spawnIntervalDecreaseRate * Time.deltaTime, minSpawnIntervalLimit);
 	}
 
 	private void SpawnBauble()
@@ -75,7 +81,7 @@ public class BubbleSpawner : MonoBehaviour
 
 				GameObject bauble = Instantiate(selectedPrefab, randomPosition, randomRotation);
 
-				float randomScale = Random.Range(0.04f, 0.1f);
+				float randomScale = Random.Range(0.08f, 0.1f);
 				bauble.transform.localScale = new Vector3(randomScale, randomScale, 1f);
 			}
 		}

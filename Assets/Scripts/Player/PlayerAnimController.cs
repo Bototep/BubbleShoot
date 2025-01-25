@@ -6,9 +6,10 @@ public class PlayerAnimController : MonoBehaviour
 	public PlayerShooting playerShooting;
 	private Animator charAnim;
 
-	[SerializeField] private float minAFKInterval = 5f; // Minimum time before going AFK
-	[SerializeField] private float maxAFKInterval = 15f; // Maximum time before going AFK
-	[SerializeField] private float afkDuration = 2f; // Fixed time to stay in AFK state
+	[SerializeField] private float minAFKInterval = 5f; 
+	[SerializeField] private float maxAFKInterval = 15f; 
+	[SerializeField] private float afkDuration = 2f;
+	[SerializeField] private float atkAnimationDuration = 0.7f;
 
 	private void Start()
 	{
@@ -32,6 +33,14 @@ public class PlayerAnimController : MonoBehaviour
 	{
 		charAnim.SetBool("ATK", true);
 		charAnim.SetBool("AFK", false);
+
+		StartCoroutine(ResetToIdle());
+	}
+
+	private IEnumerator ResetToIdle()
+	{
+		yield return new WaitForSeconds(atkAnimationDuration);
+		Idle();
 	}
 
 	private IEnumerator RandomAFKCoroutine()

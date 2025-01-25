@@ -6,11 +6,14 @@ public class PlayerShooting : MonoBehaviour
 	[SerializeField] private GameObject currentProjectilePrefab, normalProjectilePrefab, penetrateProjectilePrefab, explodeProjectilePrefab, peneExploProjectilePrefab;
 	[SerializeField] private Transform projectileSpawnPosition;
 	[SerializeField] private float projectileSpeed = 10f, fireRate = 0.5f;
+	[SerializeField] private float minRotation = -45f;
+	[SerializeField] private float maxRotation = 45f;
 	public float rotationOffset = -90f;
 	public TMP_Text ammoTxt;
 	public TMP_Text timeTxt;
 	public SkillManager skillManager;
 	public PlayerAnimController playerAnimController;
+	public PiercerAnimController piercerAnimController;
 
 	private float _nextFireTime = 0f;
 	private int penetrateBulletCount = 0, explodeBulletCount = 0, peneExploBulletCount = 0;
@@ -30,10 +33,8 @@ public class PlayerShooting : MonoBehaviour
 	{
 		if (currentProjectilePrefab != null && projectileSpawnPosition != null)
 		{
-			if (playerAnimController != null)
-			{
-				playerAnimController.ATK();
-			}
+			playerAnimController?.ATK();
+			piercerAnimController?.PierATK();
 
 			var newProjectile = Instantiate(currentProjectilePrefab, projectileSpawnPosition.position, Quaternion.identity);
 			Vector3 shootDirection = transform.right;
@@ -43,23 +44,26 @@ public class PlayerShooting : MonoBehaviour
 				skillManager.isPenetrateActive = false;
 				ChangeProjectile(normalProjectilePrefab);
 				penetrateBulletCount = 0;
-				UpdateAmmoText("Normal Bullet");
-			}else if (currentProjectilePrefab == explodeProjectilePrefab && !isRapidFireActive && ++explodeBulletCount >= 1)
+				UpdateAmmoText("Pene");
+			}
+			else if (currentProjectilePrefab == explodeProjectilePrefab && !isRapidFireActive && ++explodeBulletCount <= 1)
 			{
 				skillManager.isExplodeActive = false;
 				ChangeProjectile(normalProjectilePrefab);
 				explodeBulletCount = 0;
-				UpdateAmmoText("Normal Bullet");
-			}else if (currentProjectilePrefab == peneExploProjectilePrefab && !isRapidFireActive && ++peneExploBulletCount >= 1)
+				UpdateAmmoText("Explode");
+			}
+			else if (currentProjectilePrefab == peneExploProjectilePrefab && !isRapidFireActive && ++peneExploBulletCount >= 1)
 			{
 				skillManager.isPenetrateActive = false;
 				skillManager.isExplodeActive = false;
 				ChangeProjectile(normalProjectilePrefab);
 				peneExploBulletCount = 0;
-				UpdateAmmoText("Normal Bullet");
-			}else
+				UpdateAmmoText("Pene Explo");
+			}
+			else
 			{
-				UpdateAmmoText("Normal Bullet");
+				UpdateAmmoText("Normal");
 			}
 
 			var projectile = newProjectile.GetComponent<Projectile>();
@@ -71,7 +75,9 @@ public class PlayerShooting : MonoBehaviour
 	{
 		Vector3 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
 		direction.z = 0;
-		transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + rotationOffset);
+		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + rotationOffset;
+		angle = Mathf.Clamp(angle, minRotation, maxRotation);
+		transform.rotation = Quaternion.Euler(0, 0, angle);
 	}
 
 	public void ChangeToPenetrate() { if (penetrateProjectilePrefab != null) ChangeProjectile(penetrateProjectilePrefab); }
@@ -81,7 +87,7 @@ public class PlayerShooting : MonoBehaviour
 		if (peneExploProjectilePrefab != null)
 		{
 			currentProjectilePrefab = peneExploProjectilePrefab;
-			UpdateAmmoText("Penetrate + Explode");
+			UpdateAmmoText("Pene Explo");
 		}
 	}
 
@@ -89,16 +95,16 @@ public class PlayerShooting : MonoBehaviour
 	private System.Collections.IEnumerator RapidFireCoroutine()
 	{
 		isRapidFireActive = true;
-		UpdateAmmoText("Rapid Fire");
+		UpdateAmmoText("Rapid");
 		yield return new WaitForSeconds(3f);
 		isRapidFireActive = false;
-		UpdateAmmoText("Normal Bullet");
+		UpdateAmmoText("Normal");
 		if (isExplodeRapidActive) { isExplodeRapidActive = false; }
 		if (isInfinitePenetrateActive) { isInfinitePenetrateActive = false; }
 		isRapidFireActive = false;
 	}
 
-	public void EnableInfinitePenetrateDuringRapidFire() { isInfinitePenetrateActive = true; UpdateAmmoText("Infinite Penetrate"); }
+	public void EnableInfinitePenetrateDuringRapidFire() { isInfinitePenetrateActive = true; UpdateAmmoText("Infinite Pene"); }
 	public void EnableExplodeDuringRapidFire() { isExplodeRapidActive = true; UpdateAmmoText("Explode + Rapid"); }
 
 	private void ChangeProjectile(GameObject newProjectilePrefab)
@@ -106,12 +112,12 @@ public class PlayerShooting : MonoBehaviour
 		if (newProjectilePrefab != null && newProjectilePrefab != currentProjectilePrefab)
 		{
 			currentProjectilePrefab = newProjectilePrefab;
-			UpdateAmmoText("Normal Bullet");
+			UpdateAmmoText("Normal");
 		}
 	}
 
-	private void UpdateAmmoText(string status)
+	private void UpdateAmmoText(string ammoType)
 	{
-		if (ammoTxt != null) ammoTxt.text = $"Current Mode: {status}";
+		if (ammoTxt != null) ammoTxt.text = ammoType;
 	}
 }
