@@ -10,6 +10,8 @@ public class PlayerShooting : MonoBehaviour
 	public TMP_Text ammoTxt;
 	public TMP_Text timeTxt;
 	public SkillManager skillManager;
+	public PlayerAnimController playerAnimController;
+
 	private float _nextFireTime = 0f;
 	private int penetrateBulletCount = 0, explodeBulletCount = 0, peneExploBulletCount = 0;
 	private bool isRapidFireActive = false, isInfinitePenetrateActive = false, isExplodeRapidActive = false;
@@ -28,6 +30,11 @@ public class PlayerShooting : MonoBehaviour
 	{
 		if (currentProjectilePrefab != null && projectileSpawnPosition != null)
 		{
+			if (playerAnimController != null)
+			{
+				playerAnimController.ATK();
+			}
+
 			var newProjectile = Instantiate(currentProjectilePrefab, projectileSpawnPosition.position, Quaternion.identity);
 			Vector3 shootDirection = transform.right;
 

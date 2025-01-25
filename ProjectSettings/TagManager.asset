@@ -43,8 +43,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1119123041
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Bullet
+    uniqueID: 3707886027
+    locked: 0
+  - name: Player
+    uniqueID: 1924804955
+    locked: 0
+  - name: Bubble
+    uniqueID: 3905829247
     locked: 0
   - name: Skill
     uniqueID: 935935133
