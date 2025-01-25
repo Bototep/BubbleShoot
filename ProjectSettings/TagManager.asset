@@ -6,11 +6,14 @@ TagManager:
   tags:
   - Bullet
   - End
+  - Penetrate
+  - Explode
+  - PeneExplo
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Bauble
+  - Bubble
   - Water
   - UI
   - Wall
@@ -42,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Skill
+    uniqueID: 935935133
     locked: 0
