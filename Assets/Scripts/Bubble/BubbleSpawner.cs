@@ -1,8 +1,17 @@
 using UnityEngine;
 
+[System.Serializable]
+public class BaublePrefabChance
+{
+	public GameObject baublePrefab;
+
+	[Range(0f, 100f)]
+	public float spawnChance;
+}
+
 public class BubbleSpawner : MonoBehaviour
 {
-	[SerializeField] private GameObject[] baublePrefabs; 
+	[SerializeField] private BaublePrefabChance[] baublePrefabsWithChances;
 	[SerializeField] private float minSpawnInterval = 1f;
 	[SerializeField] private float maxSpawnInterval = 3f;
 	[SerializeField] private float spawnHeightOffset = 2f;
@@ -27,19 +36,48 @@ public class BubbleSpawner : MonoBehaviour
 
 	private void SpawnBauble()
 	{
-		if (spawnArea != null && baublePrefabs.Length > 0)
+		if (spawnArea != null && baublePrefabsWithChances.Length > 0)
 		{
-			Vector2 randomPosition = new Vector2(
-				Random.Range(spawnArea.bounds.min.x, spawnArea.bounds.max.x),
-				spawnArea.bounds.max.y + spawnHeightOffset
-			);
+			float totalChance = 0f;
+			foreach (var prefabChance in baublePrefabsWithChances)
+			{
+				totalChance += prefabChance.spawnChance;
+			}
 
-			GameObject baublePrefab = baublePrefabs[Random.Range(0, baublePrefabs.Length)];
+			if (totalChance > 100f)
+			{
+				Debug.LogWarning("Total spawn chance exceeds 100%. Resetting to 100.");
+				totalChance = 100f;
+			}
 
-			GameObject bauble = Instantiate(baublePrefab, randomPosition, Quaternion.identity);
+			float randomValue = Random.Range(0f, totalChance);
 
-			float randomScale = Random.Range(1f, 2f);
-			bauble.transform.localScale = new Vector3(randomScale, randomScale, 1f);
+			GameObject selectedPrefab = null;
+			float cumulativeChance = 0f;
+			foreach (var prefabChance in baublePrefabsWithChances)
+			{
+				cumulativeChance += prefabChance.spawnChance;
+				if (randomValue <= cumulativeChance)
+				{
+					selectedPrefab = prefabChance.baublePrefab;
+					break;
+				}
+			}
+
+			if (selectedPrefab != null)
+			{
+				Vector2 randomPosition = new Vector2(
+					Random.Range(spawnArea.bounds.min.x, spawnArea.bounds.max.x),
+					spawnArea.bounds.max.y + spawnHeightOffset
+				);
+
+				Quaternion randomRotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+
+				GameObject bauble = Instantiate(selectedPrefab, randomPosition, randomRotation);
+
+				float randomScale = Random.Range(0.04f, 0.1f);
+				bauble.transform.localScale = new Vector3(randomScale, randomScale, 1f);
+			}
 		}
 	}
 

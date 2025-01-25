@@ -4,23 +4,20 @@ public class Bubble : MonoBehaviour
 {
 	[SerializeField] private int scoreValue = 1;
 	[SerializeField] private ParticleSystem destroyParticlePrefab;
-
-	[Header("Movement Settings")]
 	[SerializeField] private float horizontalMoveSpeed = 1f;
-
-	[Header("Skill Type Settings")]
 	[SerializeField] private SkillManager.SkillType skillType = SkillManager.SkillType.None; // Set the skill type in Inspector
 
 	private float upwardSpeed;
 	private float noiseFrequency;
 	private float noiseStrength;
-
 	private Rigidbody2D rb;
 	private float noiseTime;
 
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
+
+		rb.gravityScale = 0f;
 
 		upwardSpeed = Random.Range(0.7f, 2f);
 		noiseFrequency = Random.Range(0.2f, 0.5f);
@@ -35,7 +32,12 @@ public class Bubble : MonoBehaviour
 		float noiseX = Mathf.PerlinNoise(noiseTime, 0f) * 2f - 1f;
 		float horizontalMovement = noiseX * noiseStrength;
 
-		rb.velocity = new Vector2(Mathf.Clamp(horizontalMovement, -horizontalMoveSpeed, horizontalMoveSpeed), rb.velocity.y);
+		rb.velocity = new Vector2(Mathf.Clamp(horizontalMovement, -horizontalMoveSpeed, horizontalMoveSpeed), Mathf.Abs(rb.velocity.y));
+
+		if (rb.velocity.y <= 0) 
+		{
+			rb.velocity = new Vector2(rb.velocity.x, upwardSpeed); 
+		}
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)
@@ -84,7 +86,7 @@ public class Bubble : MonoBehaviour
 
 	private void HandleExplosion(Vector2 explosionPosition)
 	{
-		float explosionRadius = 4f; // Set the radius of the explosion
+		float explosionRadius = 2f; 
 
 		Collider2D[] hitBubbles = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius);
 
@@ -101,6 +103,6 @@ public class Bubble : MonoBehaviour
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(transform.position, 2f); // Adjust to match explosionRadius for visual debugging
+		Gizmos.DrawWireSphere(transform.position, 2f); 
 	}
 }
