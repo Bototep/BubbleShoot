@@ -18,9 +18,12 @@ public class PlayerShooting : MonoBehaviour
 	private float _nextFireTime = 0f;
 	private int penetrateBulletCount = 0, explodeBulletCount = 0, peneExploBulletCount = 0;
 	private bool isRapidFireActive = false, isInfinitePenetrateActive = false, isExplodeRapidActive = false;
+	private bool gameOver = false; 
 
 	void Update()
 	{
+		if (gameOver) return; 
+
 		RotateToMouse();
 		if (Input.GetMouseButtonDown(0) && (isRapidFireActive || Time.time >= _nextFireTime))
 		{
@@ -119,5 +122,15 @@ public class PlayerShooting : MonoBehaviour
 	private void UpdateAmmoText(string ammoType)
 	{
 		if (ammoTxt != null) ammoTxt.text = ammoType;
+	}
+
+	public void GameOver()
+	{
+		gameOver = true;  
+	}
+
+	public void RestartGame()
+	{
+		gameOver = false; 
 	}
 }

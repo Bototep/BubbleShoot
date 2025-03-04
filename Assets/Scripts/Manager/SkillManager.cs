@@ -11,13 +11,6 @@ public class SkillManager : MonoBehaviour
 	public Image Penetrate1, Rapid1, Explode1, Penetrate2, Rapid2, Explode2, Penetrate3, Rapid3, Explode3;
 	public bool isPenetrateActive, isRapidActive, isExplodeActive;
 
-	private void Awake()
-	{
-		if (Instance == null) Instance = this;
-		else { Destroy(gameObject); return; }
-		DontDestroyOnLoad(gameObject);
-	}
-
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Q)) UseSkill(0);
@@ -79,5 +72,28 @@ public class SkillManager : MonoBehaviour
 		penetrateImg.gameObject.SetActive(skill == SkillType.Penetrate);
 		rapidImg.gameObject.SetActive(skill == SkillType.Rapid);
 		explodeImg.gameObject.SetActive(skill == SkillType.Explode);
+	}
+
+	public void ResetSkills()
+	{
+		for (int i = 0; i < skillSlots.Length; i++)
+		{
+			skillSlots[i] = SkillType.None;
+			UpdateSkillButton(i);
+		}
+
+		isPenetrateActive = false;
+		isRapidActive = false;
+		isExplodeActive = false;
+
+		Penetrate1.gameObject.SetActive(false);
+		Rapid1.gameObject.SetActive(false);
+		Explode1.gameObject.SetActive(false);
+		Penetrate2.gameObject.SetActive(false);
+		Rapid2.gameObject.SetActive(false);
+		Explode2.gameObject.SetActive(false);
+		Penetrate3.gameObject.SetActive(false);
+		Rapid3.gameObject.SetActive(false);
+		Explode3.gameObject.SetActive(false);
 	}
 }

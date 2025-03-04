@@ -11,6 +11,8 @@ public class Bubble : MonoBehaviour
 	[SerializeField] private Transform childGameObject;
 	[SerializeField] private Vector3 childWorldScale = new Vector3(0.3f, 0.3f, 1f);
 
+	private GameManager gameManager;
+	private SkillManager skillManager; 
 	private float upwardSpeed;
 	private float noiseFrequency;
 	private float noiseStrength;
@@ -20,6 +22,8 @@ public class Bubble : MonoBehaviour
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		skillManager = FindFirstObjectByType<SkillManager>();
+		gameManager = FindFirstObjectByType<GameManager>();
 
 		rb.gravityScale = 0f;
 		upwardSpeed = Random.Range(1.5f, 2.5f);
@@ -47,9 +51,9 @@ public class Bubble : MonoBehaviour
 
 		rb.velocity = new Vector2(Mathf.Clamp(horizontalMovement, -horizontalMoveSpeed, horizontalMoveSpeed), Mathf.Abs(rb.velocity.y));
 
-		if (rb.velocity.y <= 0) 
+		if (rb.velocity.y <= 0)
 		{
-			rb.velocity = new Vector2(rb.velocity.x, upwardSpeed); 
+			rb.velocity = new Vector2(rb.velocity.x, upwardSpeed);
 		}
 	}
 
@@ -81,11 +85,11 @@ public class Bubble : MonoBehaviour
 
 	private void HandleBubbleHit()
 	{
-		GameManager.Instance.AddScore(scoreValue);
+		gameManager.AddScore(scoreValue);
 
-		if (skillType != SkillManager.SkillType.None)
+		if (skillManager != null && skillType != SkillManager.SkillType.None)
 		{
-			SkillManager.Instance.OnSkillPickup(skillType);
+			skillManager.OnSkillPickup(skillType);
 		}
 
 		if (destroyParticlePrefab != null)
@@ -105,17 +109,16 @@ public class Bubble : MonoBehaviour
 		if (KikiParticlePrefab != null)
 		{
 			ParticleSystem kikiParticles = Instantiate(KikiParticlePrefab, transform.position, Quaternion.Euler(-90f, 0f, 0f));
-			kikiParticles.transform.localScale = Vector3.one;  
+			kikiParticles.transform.localScale = Vector3.one;
 			Destroy(kikiParticles.gameObject, kikiParticles.main.duration);
 		}
 
 		Destroy(gameObject);
 	}
 
-
 	private void HandleExplosion(Vector2 explosionPosition)
 	{
-		float explosionRadius = 2f; 
+		float explosionRadius = 2f;
 
 		Collider2D[] hitBubbles = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius);
 
@@ -132,6 +135,11 @@ public class Bubble : MonoBehaviour
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(transform.position, 2f); 
+		Gizmos.DrawWireSphere(transform.position, 2f);
+	}
+
+	public void SetSkillManager(SkillManager manager)
+	{
+		skillManager = manager; 
 	}
 }
